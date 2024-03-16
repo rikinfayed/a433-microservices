@@ -7,12 +7,12 @@ pipeline {
     }
     stages {
         stage('Build') { 
-            step {
+            steps {
                 sh 'go mod download'
             }
         }
         stage('Test') { 
-            step {
+            steps {
                 sh 'go test -v -short --count=1 $(go list ./...)'
             }
         }
