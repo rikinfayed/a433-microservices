@@ -98,19 +98,18 @@ podTemplate(containers: [
                 }
             }
         }
-        stage('build-app-karsajobs') { 
-            steps {
-                sh '''
-                    pwd
-                    ls
-                '''
+        stage('build-app-karsajobs') {  
+            container('docker') { 
+                stage('build app') {
+                    sh '''
+                        pwd
+                        ls
+                        echo ${IMAGE_BRANCH_TAG}
+                        echo ${env.GIT_COMMIT[0..6]}
+                        docker build -t test-image .
+                    '''
+                }
             }
-            // stage('build app') {
-            //     sh '''
-            //         pwd
-            //         ls
-            //     '''
-            // }
         }
     }
 }
