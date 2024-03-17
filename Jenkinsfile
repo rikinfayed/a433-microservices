@@ -66,12 +66,10 @@ podTemplate(containers: [
         command: 'sleep',
         args: '99d' 
         ),
-    containerTemplate(
-        name: 'docker', 
-        image: 'docker:dind',
-        command: 'sleep',
-        args: '99d' 
-        ),
+    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
+  ],
+  volumes: [
+    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
   ]) {
 
     env.CGO_ENABLED=0
@@ -100,21 +98,22 @@ podTemplate(containers: [
             }
         }
         stage('build-app-karsajobs') {  
-            agent { docker label: 'docker'}
-            stage('build app') {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'GHCR_CREDENTIALS',
-                        usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASSWORD'
-                    )
-                ]) {
-                    sh ''' 
-                        echo ${IMAGE_BRANCH_TAG}
-                        echo ${REGISTRY_PASSWORD} | docker login ${REGISTRY_URL} -u ${REGISTRY_USER} --password-stdin
-                        // docker push ${IMAGE_BRANCH_TAG}.${env.GIT_COMMIT[0..6]}
-                        // docker tag ${IMAGE_BRANCH_TAG}.${env.GIT_COMMIT[0..6]} ${IMAGE_BRANCH_TAG}
-                        // docker push ${IMAGE_BRANCH_TAG}
-                    '''
+            container('docker') {
+                stage('build app') {
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: 'GHCR_CREDENTIALS',
+                            usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASSWORD'
+                        )
+                    ]) {
+                        sh ''' 
+                            echo ${IMAGE_BRANCH_TAG}
+                            echo ${REGISTRY_PASSWORD} | docker login ${REGISTRY_URL} -u ${REGISTRY_USER} --password-stdin
+                            // docker push ${IMAGE_BRANCH_TAG}.${env.GIT_COMMIT[0..6]}
+                            // docker tag ${IMAGE_BRANCH_TAG}.${env.GIT_COMMIT[0..6]} ${IMAGE_BRANCH_TAG}
+                            // docker push ${IMAGE_BRANCH_TAG}
+                        '''
+                    }
                 }
             }
         }
