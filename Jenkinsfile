@@ -68,7 +68,7 @@ podTemplate(containers: [
         ),
   ]) {
 
-    env.CGO_ENABLED='1 go build'
+    env.CGO_ENABLED=0
 
     node(POD_LABEL) {
         stage('lint-dockerfile') {
