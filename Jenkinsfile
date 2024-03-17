@@ -95,21 +95,12 @@ podTemplate(containers: [
             }
         }
         post {
-            always {
-                archiveArtifacts 'hadolint_lint.txt'
+            // always {
+            //     archiveArtifacts 'hadolint_lint.txt'
+            // }
+            success {
+                echo 'I succeeded!'
             }
         }
-
-        // stage('Get a Python Project') {
-        //     git url: 'https://github.com/hashicorp/terraform.git', branch: 'main'
-        //     container('python') {
-        //         stage('Build a Go project') {
-        //             sh '''
-        //             echo "Go Build"
-        //             '''
-        //         }
-        //     }
-        // }
-
     }
 }
