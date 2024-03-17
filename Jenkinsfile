@@ -94,11 +94,11 @@ podTemplate(containers: [
                 }
             }
         }
-        // post {
-        //     always {
-        //         archiveArtifacts 'hadolint_lint.txt'
-        //     }
-        // }
+        post {
+            always {
+                archiveArtifacts 'hadolint_lint.txt'
+            }
+        }
 
         // stage('Get a Python Project') {
         //     git url: 'https://github.com/hashicorp/terraform.git', branch: 'main'
