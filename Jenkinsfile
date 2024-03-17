@@ -100,6 +100,7 @@ podTemplate(containers: [
             }
         }
         stage('build-app-karsajobs') {  
+            agent { docker label: 'docker'}
             stage('build app') {
                 withCredentials([
                     usernamePassword(
