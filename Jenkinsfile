@@ -70,18 +70,19 @@ podTemplate(containers: [
 
     node(POD_LABEL) {
         stage('lint-dockerfile') {
-            container('hadolint') {
-                stage ('lint dockerfile') {
+            git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
+            stage ('lint dockerfile') {
+                container('hadolint') {
                     sh '''
                     pwd
                     ls
                     hadolint dockerfiles/* | tee -a hadolint_lint.txt
                     '''
                 }
-                post {
-                    always {
-                        archiveArtifacts 'hadolint_lint.txt'
-                    }
+            }
+            post {
+                always {
+                    archiveArtifacts 'hadolint_lint.txt'
                 }
             }
         }
