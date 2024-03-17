@@ -75,6 +75,7 @@ podTemplate(containers: [
   ]) {
 
     env.CGO_ENABLED=0
+    env.REGISTRY_URL="ghcr.io"
 
     node(POD_LABEL) {
         stage('lint-dockerfile') {
@@ -99,22 +100,20 @@ podTemplate(containers: [
             }
         }
         stage('build-app-karsajobs') {  
-            container('docker') { 
-                stage('build app') {
-                    withCredentials([
-                        usernamePassword(
-                            credentialsId: 'GHCR_CREDENTIALS',
-                            usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASSWORD'
-                        )
-                    ]) {
-                        sh '''
-                            pwd
-                            ls
-                            echo ${REGISTRY_USER}
-                            echo ${REGISTRY_PASSWORD}
-                            docker build -t test-image .
-                        '''
-                    }
+            stage('build app') {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'GHCR_CREDENTIALS',
+                        usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASSWORD'
+                    )
+                ]) {
+                    sh ''' 
+                        echo ${IMAGE_BRANCH_TAG}
+                        echo ${REGISTRY_PASSWORD} | docker login ${REGISTRY_URL} -u ${REGISTRY_USER} --password-stdin
+                        // docker push ${IMAGE_BRANCH_TAG}.${env.GIT_COMMIT[0..6]}
+                        // docker tag ${IMAGE_BRANCH_TAG}.${env.GIT_COMMIT[0..6]} ${IMAGE_BRANCH_TAG}
+                        // docker push ${IMAGE_BRANCH_TAG}
+                    '''
                 }
             }
         }
