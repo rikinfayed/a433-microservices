@@ -71,12 +71,12 @@ podTemplate(containers: [
     node(POD_LABEL) {
         stage('lint-dockerfile') {
             git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
-            stage ('lint dockerfile') {
+            stage ('Lint dockerfile') {
                 container('hadolint') {
                     sh '''
                     pwd
                     ls
-                    hadolint * | tee -a hadolint_lint.txt
+                    hadolint Dockerfile | tee -a hadolint_lint.txt
                     '''
                 }
             }
