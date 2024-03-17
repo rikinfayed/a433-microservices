@@ -66,6 +66,12 @@ podTemplate(containers: [
         command: 'sleep',
         args: '99d' 
         ),
+    containerTemplate(
+        name: 'docker', 
+        image: 'docker:dnd',
+        command: 'sleep',
+        args: '99d' 
+        ),
   ]) {
 
     env.CGO_ENABLED=0
@@ -93,11 +99,18 @@ podTemplate(containers: [
             }
         }
         stage('build-app-karsajobs') { 
-            stage('build app') {
+            steps {
                 sh '''
                     pwd
+                    ls
                 '''
             }
+            // stage('build app') {
+            //     sh '''
+            //         pwd
+            //         ls
+            //     '''
+            // }
         }
     }
 }
