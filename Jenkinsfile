@@ -55,6 +55,12 @@
 
 podTemplate(containers: [
     containerTemplate(
+        name: 'hadolint', 
+        image: 'hadolint:latest',
+        command: 'sleep',
+        args: '99d' 
+        ),
+    containerTemplate(
         name: 'golang', 
         image: 'golang:1.15-alpine',
         command: 'sleep',
@@ -63,11 +69,23 @@ podTemplate(containers: [
   ]) {
 
     node(POD_LABEL) {
+        stage('lint-dockerfile') {
+            container('hadolint') {
+                steps {
+                    sh 'hadolint dockerfiles/* | tee -a hadolint_lint.txt'
+                }
+                post {
+                    always {
+                        archiveArtifacts 'hadolint_lint.txt'
+                    }
+                }
+            }
+        }
         stage('Build') {
             //git 'https://github.com/spring-projects/spring-petclinic.git'
             git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
             container('golang') {
-                stage('build') {
+                stage('Install depencies') {
                     // sh '''
                     // echo "maven build"
                     // '''       
