@@ -75,7 +75,7 @@ podTemplate(containers: [
                 container('hadolint') {
                     sh '''
                     hadolint Dockerfile | tee -a hadolint_lint.txt
-                    ls
+                    cat hadolint_lint.txt
                     '''
                 }
             }
