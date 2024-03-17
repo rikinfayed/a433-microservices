@@ -76,7 +76,7 @@ podTemplate(containers: [
                     sh '''
                     pwd
                     ls
-                    hadolint dockerfiles/* | tee -a hadolint_lint.txt
+                    hadolint * | tee -a hadolint_lint.txt
                     '''
                 }
             }
