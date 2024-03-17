@@ -63,7 +63,7 @@ podTemplate(containers: [
   ]) {
 
     node(POD_LABEL) {
-        stage('Get a Maven project') {
+        stage('Build') {
             //git 'https://github.com/spring-projects/spring-petclinic.git'
             git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
             container('golang') {
@@ -71,7 +71,12 @@ podTemplate(containers: [
                     // sh '''
                     // echo "maven build"
                     // '''       
-                    sh 'go mod download'
+                    //sh 'go mod download'
+                    sh '''
+                        mkdir -p /go/src/github.com/rikinfayed
+                        ln -s `pwd` /go/src/github.com/rikinfayed/a433-microservices
+                        cd /go/src/github.com/rikinfayed/a433-microservices && make
+                    '''
                 }
             }
         }
