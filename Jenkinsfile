@@ -57,7 +57,8 @@ podTemplate(containers: [
     containerTemplate(
         name: 'golang', 
         image: 'golang:1.15-alpine',
-        args: '-p 3000:3000' 
+        command: 'sleep',
+        args: '99d' 
         ),
   ]) {
 
