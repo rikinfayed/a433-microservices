@@ -34,7 +34,7 @@ podTemplate(containers: [
                 }
             }    
         }
-        stage('build-app-karsajobs') {
+        stage('build-app-karsajobs-ui') {
             gitCommit = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
             container('docker') {
                 stage('build image') {
