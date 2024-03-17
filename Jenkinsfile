@@ -68,7 +68,7 @@ podTemplate(containers: [
         ),
     containerTemplate(
         name: 'docker', 
-        image: 'docker:dnd',
+        image: 'docker:dind',
         command: 'sleep',
         args: '99d' 
         ),
