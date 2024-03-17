@@ -75,7 +75,7 @@ podTemplate(containers: [
                     sh '''
                         mkdir -p /go/src/github.com/rikinfayed
                         ln -s `pwd` /go/src/github.com/rikinfayed/a433-microservices
-                        cd /go/src/github.com/rikinfayed/a433-microservices && make
+                        cd /go/src/github.com/rikinfayed/a433-microservices && go mod download
                     '''
                 }
             }
