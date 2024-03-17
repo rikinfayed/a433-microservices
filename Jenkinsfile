@@ -101,13 +101,20 @@ podTemplate(containers: [
         stage('build-app-karsajobs') {  
             container('docker') { 
                 stage('build app') {
-                    sh '''
-                        pwd
-                        ls
-                        echo ${IMAGE_BRANCH_TAG}
-                        echo ${env.GIT_COMMIT[0..6]}
-                        docker build -t test-image .
-                    '''
+                    withCredentials([
+                        usernamePassword(
+                            credentialId: 'GHCR_CREDENTIALS',
+                            usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASSWORD'
+                        )
+                    ]) {
+                        sh '''
+                            pwd
+                            ls
+                            echo ${REGISTRY_USER}
+                            echo ${REGISTRY_PASSWORD}
+                            docker build -t test-image .
+                        '''
+                    }
                 }
             }
         }
