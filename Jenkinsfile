@@ -103,7 +103,7 @@ podTemplate(containers: [
                 stage('build app') {
                     withCredentials([
                         usernamePassword(
-                            credentialId: 'GHCR_CREDENTIALS',
+                            credentialsId: 'GHCR_CREDENTIALS',
                             usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASSWORD'
                         )
                     ]) {
