@@ -68,6 +68,8 @@ podTemplate(containers: [
         ),
   ]) {
 
+    env.CGO_ENABLED=1 go build
+
     node(POD_LABEL) {
         stage('lint-dockerfile') {
             git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
@@ -87,7 +89,7 @@ podTemplate(containers: [
                     sh '''
                         mkdir -p /go/src/github.com/rikinfayed
                         ln -s `pwd` /go/src/github.com/rikinfayed/a433-microservices
-                        cd /go/src/github.com/rikinfayed/a433-microservices && go mod download && go test -v -short --count=1 $(go list ./...)
+                        cd /go/src/github.com/rikinfayed/a433-microservices && go clean --cache && go mod download && go test -v -short --count=1 $(go list ./...)
                     '''
                 }
             }
