@@ -74,9 +74,8 @@ podTemplate(containers: [
             stage ('Lint dockerfile') {
                 container('hadolint') {
                     sh '''
-                    pwd
-                    ls
                     hadolint Dockerfile | tee -a hadolint_lint.txt
+                    ls
                     '''
                 }
             }
