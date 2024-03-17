@@ -71,7 +71,7 @@ podTemplate(containers: [
     node(POD_LABEL) {
         stage('lint-dockerfile') {
             git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
-            stage ('Lint dockerfile') {
+            stage ('lint dockerfile') {
                 container('hadolint') {
                     sh '''
                     hadolint *Dockerfile* | tee -a hadolint_lint.txt
@@ -79,23 +79,19 @@ podTemplate(containers: [
                 }
             }    
         }
-        // stage('Build') {
-        //     //git 'https://github.com/spring-projects/spring-petclinic.git'
-        //     git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
-        //     container('golang') {
-        //         stage('Install depencies') {
-        //             // sh '''
-        //             // echo "maven build"
-        //             // '''       
-        //             //sh 'go mod download'
-        //             sh '''
-        //                 mkdir -p /go/src/github.com/rikinfayed
-        //                 ln -s `pwd` /go/src/github.com/rikinfayed/a433-microservices
-        //                 cd /go/src/github.com/rikinfayed/a433-microservices && go mod download
-        //             '''
-        //         }
-        //     }
-        // }
+        stage('test-app') {
+            //git 'https://github.com/spring-projects/spring-petclinic.git'
+            git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
+            container('golang') {
+                stage('test-app') {
+                    sh '''
+                        mkdir -p /go/src/github.com/rikinfayed
+                        ln -s `pwd` /go/src/github.com/rikinfayed/a433-microservices
+                        cd /go/src/github.com/rikinfayed/a433-microservices && go mod download && go test -v -short --count=1 $(go list ./...)
+                    '''
+                }
+            }
+        }
         // post {
         //     always {
         //         archiveArtifacts 'hadolint_lint.txt'
