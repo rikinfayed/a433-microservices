@@ -65,8 +65,9 @@ podTemplate(containers: [
     node(POD_LABEL) {
         stage('Get a Maven project') {
             //git 'https://github.com/spring-projects/spring-petclinic.git'
+            git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
             container('golang') {
-                stage('Build a Maven project') {
+                stage('build') {
                     // sh '''
                     // echo "maven build"
                     // '''       
