@@ -69,33 +69,16 @@ podTemplate(containers: [
   ]) {
 
     node(POD_LABEL) {
-        stages {
-            stage('Run Docker') {
-                stages {
-                    git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
-                    stage('Lint Dockerfile') {
-                        steps{
-                            container('hadolint') {
-                                sh '''
-                                hadolint *Dockerfile* | tee -a hadolint_lint.txt
-                                '''
-                            }
-                        } 
-                    }
+        stage('lint-dockerfile') {
+            git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
+            stage ('Lint dockerfile') {
+                container('hadolint') {
+                    sh '''
+                    hadolint *Dockerfile* | tee -a hadolint_lint.txt
+                    '''
                 }
-            }
+            }    
         }
-        // stage('lint-dockerfile') {
-        //     git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
-        //     stage ('Lint dockerfile') {
-        //         container('hadolint') {
-        //             sh '''
-        //             hadolint *Dockerfile* | tee -a hadolint_lint.txt
-        //             '''
-        //         }
-        //     }
-            
-        // }
         // stage('Build') {
         //     //git 'https://github.com/spring-projects/spring-petclinic.git'
         //     git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
