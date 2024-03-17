@@ -82,8 +82,6 @@ podTemplate(containers: [
             }    
         }
         stage('test-app') {
-            //git 'https://github.com/spring-projects/spring-petclinic.git'
-            git url: 'https://github.com/rikinfayed/a433-microservices.git', branch: 'karsajobs'
             container('golang') {
                 stage('test-app') {
                     sh '''
@@ -94,12 +92,11 @@ podTemplate(containers: [
                 }
             }
         }
-        post {
-            // always {
-            //     archiveArtifacts 'hadolint_lint.txt'
-            // }
-            success {
-                echo 'I succeeded!'
+        stage('build-app-karsajobs') { 
+            stage('build app') {
+                sh '''
+                    pwd
+                '''
             }
         }
     }
