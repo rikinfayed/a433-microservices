@@ -80,11 +80,7 @@ podTemplate(containers: [
                                 hadolint *Dockerfile* | tee -a hadolint_lint.txt
                                 '''
                             }
-                        }
-                        post {
-                            failure { name: 'Build Docker Image', state: 'failed' }
-                            success { name: 'Build Docker Image', state: 'success' }
-                        }
+                        } 
                     }
                 }
             }
