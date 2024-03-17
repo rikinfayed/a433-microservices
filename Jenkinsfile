@@ -56,7 +56,7 @@
 podTemplate(containers: [
     containerTemplate(
         name: 'hadolint', 
-        image: 'hadolint:latest',
+        image: 'hadolint/hadolint:latest-debian',
         command: 'sleep',
         args: '99d' 
         ),
